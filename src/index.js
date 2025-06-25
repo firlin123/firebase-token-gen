@@ -4,23 +4,12 @@ import { WorkerEntrypoint } from "cloudflare:workers";
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
-/**
- * Built-in types for Cloudflare Workers environment variables.
- * @typedef {Object} EnvBuiltins
- * @property {Fetcher} ASSETS - The assets object for static files.
- * @property {"1"} CF_PAGES - Whether the request is from Cloudflare Pages or Workers.
- * @property {string} CF_PAGES_BRANCH - The branch name of the deployment.
- * @property {string} CF_PAGES_COMMIT_SHA - The commit SHA of the deployment.
- * @property {string} CF_PAGES_URL - The URL of the Cloudflare Pages deployment.
- */
 
 /**
- * Put your custom environment variables you defined in the Dashboard here.
- * @typedef {Object} EnvCustom
- * @property {import('firebase-admin/app').ServiceAccount} FIREBASE_SAK The Firebase service account key.
+ * Put your custom environment variables and bindings you defined in the Dashboard/wrangler.toml here.
+ * @typedef {Object} Env
+ * @property {string} FIREBASE_SAK_JSON The Firebase service account key.
  */
-
-/** @typedef {EnvBuiltins & EnvCustom} Env */
 
 /**
  * @type {WorkerEntrypoint<Env>}
@@ -40,7 +29,7 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
     constructor(ctx, env) {
         super(ctx, env);
         // this.#app = initializeApp({
-        //     credential: cert(env.FIREBASE_SAK),
+        //     credential: cert(JSON.parse(env.FIREBASE_SAK_JSON)),
         // });
         console.log(env);
         this._ctx = ctx;
