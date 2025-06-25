@@ -8,7 +8,9 @@
     "deploy": "wrangler deploy",
     "non-prod-deploy": "wrangler versions upload"
   },
-  "dependencies": {},
+  "dependencies": {
+    "firebase-admin": "^13.4.0"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250620.0",
     "wrangler": "^4.21.2"
