@@ -59,14 +59,7 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
      * @return {Promise<string>} The generated custom token.
      */
     async generateToken(uid) {
-        const ctxRep = [''];
-        const envRep = [''];
-        for (const key in this._ctx) {
-            ctxRep.push(`${key}: ${this._ctx[key]}`);
-        }
-        for (const key in this._env) {
-            envRep.push(`${key}: ${this._env[key]}`);
-        }
-        return JSON.stringify({ ctx: ctxRep.join('\n'), env: envRep.join('\n') });
+
+        return JSON.stringify({ env: `constructor: ${this._env.constructor.name}, tostring: ${this._env.toString()}, String(): ${String(this._env)}` });
     }
 };
