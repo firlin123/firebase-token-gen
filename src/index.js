@@ -15,11 +15,11 @@ import { getAuth } from 'firebase-admin/auth';
  * @type {WorkerEntrypoint<Env>}
  */
 export default class FirebaseTokenGen extends WorkerEntrypoint {
-    // /**
-    //  * Firebase app instance.
-    //  * @type {import('firebase-admin/app').App}
-    //  */
-    // #app;
+    /**
+     * Firebase app instance.
+     * @type {import('firebase-admin/app').App}
+     */
+    #app;
 
     /**
      * Creates a new instance of FirebaseTokenGen.
@@ -28,12 +28,9 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
      */
     constructor(ctx, env) {
         super(ctx, env);
-        // this.#app = initializeApp({
-        //     credential: cert(JSON.parse(env.FIREBASE_SAK_JSON)),
-        // });
-        console.log(env);
-        this._ctx = ctx;
-        this._env = env;
+        this.#app = initializeApp({
+            credential: cert(JSON.parse(env.FIREBASE_SAK_JSON)),
+        });
     }
 
     /**
@@ -48,14 +45,6 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
      * @return {Promise<string>} The generated custom token.
      */
     async generateToken(uid) {
-        const ctxRep = [''];
-        const envRep = [''];
-        for (const key in this._ctx) {
-            ctxRep.push(`${key}: ${this._ctx[key]}`);
-        }
-        for (const key in this._env) {
-            envRep.push(`${key}: ${this._env[key]}`);
-        }
-        return JSON.stringify({ ctx: ctxRep.join('\n'), env: envRep.join('\n') });
+        return await getAuth(this.#app).createCustomToken(uid);
     }
 };
