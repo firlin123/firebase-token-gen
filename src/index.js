@@ -43,6 +43,8 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
         //     credential: cert(env.FIREBASE_SAK),
         // });
         console.log(env);
+        this._ctx = ctx;
+        this._env = env;
     }
 
     /**
@@ -57,6 +59,14 @@ export default class FirebaseTokenGen extends WorkerEntrypoint {
      * @return {Promise<string>} The generated custom token.
      */
     async generateToken(uid) {
-        return 'todo';
+        const ctxRep = [''];
+        const envRep = [''];
+        for (const key in this._ctx) {
+            ctxRep.push(`${key}: ${this._ctx[key]}`);
+        }
+        for (const key in this._env) {
+            envRep.push(`${key}: ${this._env[key]}`);
+        }
+        return JSON.stringify({ ctx: ctxRep.join('\n'), env: envRep.join('\n') });
     }
 };
